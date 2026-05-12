@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Clinica - I Miei Appuntamenti</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <h1 style="text-align: center; margin-top: 40px;">I Tuoi Appuntamenti</h1>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Medico</th>
+                    <th>Stanza</th>
+                    <th>Data e Ora</th>
+                    <th>Motivo</th>
+                </tr>
+            </thead>
+            <tbody id="corpoTabella">
+                </tbody>
+        </table>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="dashboard.html" class="btn-secondary">
+            <i class="fas fa-arrow-left"></i> Torna alla Dashboard
+        </a>
+    </div>
+
+    <script>
+        fetch('api/lista')
+            .then(res => res.text())
+            .then(text => {
+                const tbody = document.getElementById('corpoTabella');
+                tbody.innerHTML = "";
+
+                const righe = text.trim().split('\n');
+                
+                righe.forEach(riga => {
+                    if (riga.trim() && riga.includes('|')) {
+                        const tr = document.createElement('tr');
+                        const colonne = riga.split('|');
+
+                        for (let i = 0; i < 5; i++) {
+                            const td = document.createElement('td');
+                            let valore = colonne[i] ? colonne[i].trim() : "-";
+                            
+                            // Pulizia etichette (es. "ID: 3" -> "3") ma non per la colonna data (i=3)
+                            if (valore.includes(':') && i !== 3) { 
+                                valore = valore.split(':')[1].trim();
+                            }
+                            
+                            td.innerText = valore;
+                            tr.appendChild(td);
+                        }
+                        tbody.appendChild(tr);
+                    }
+                });
+            })
+            .catch(err => console.error("Errore caricamento:", err));
+    </script>
+</body>
+</html>

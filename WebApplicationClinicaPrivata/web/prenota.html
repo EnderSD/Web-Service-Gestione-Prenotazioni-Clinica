@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Clinica - Nuova Prenotazione</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Prenota una Visita</h1>
+
+    <div class="box" style="width: 400px;">
+        <form action="api/nuova" method="POST">
+            <label>Seleziona Data</label>
+            <input type="date" name="data" required>
+            
+            <label>Motivo della Visita</label>
+            <textarea name="motivo" rows="4" placeholder="Descrivi brevemente il motivo..." required></textarea>
+            
+            <button type="submit">Conferma Appuntamento</button>
+        </form>
+    </div>
+
+    <div class="footer-box" style="width: 400px;">
+        <a href="dashboard.html">← Torna alla Dashboard</a>
+    </div>
+
+</body>
+</html>

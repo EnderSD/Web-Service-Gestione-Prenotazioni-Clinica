@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Clinica Privata - Registrati</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Crea il tuo Account</h1>
+
+    <div class="box">
+        <div id="errorMsg" class="alert">Questa email è già registrata.</div>
+
+        <form action="api/registrazione" method="POST">
+            <label>Nome</label>
+            <input type="text" name="nome" placeholder="Inserisci il tuo nome" required>
+            
+            <label>Cognome</label>
+            <input type="text" name="cognome" placeholder="Inserisci il tuo cognome" required>
+            
+            <label>Indirizzo Email</label>
+            <input type="email" name="email" placeholder="nome@esempio.com" required>
+            
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Scegli una password sicura" required>
+            
+            <button type="submit">Crea Account</button>
+        </form>
+    </div>
+
+    <div class="footer-box">
+        Hai già un account? <a href="index.html">Torna al login</a>.
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('error') === 'exists') {
+            document.getElementById('errorMsg').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

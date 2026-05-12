@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Clinica Privata - Accedi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Accedi alla Clinica</h1>
+
+    <div class="box">
+        <div id="errorMsg" class="alert">Email o password errati.</div>
+        
+        <form action="api/login" method="POST">
+            <label>Indirizzo Email</label>
+            <input type="email" name="email" required>
+            
+            <label>Password</label>
+            <input type="password" name="password" required>
+            
+            <button type="submit">Accedi</button>
+        </form>
+    </div>
+
+    <div class="footer-box">
+        Nuovo utente? <a href="registrazione.html">Crea un account</a>.
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('error') === 'auth') {
+            document.getElementById('errorMsg').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

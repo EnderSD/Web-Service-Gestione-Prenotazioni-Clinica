@@ -1,0 +1,407 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* style.css */
+/* style.css */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background-color: #0d1117; /* Sfondo quasi nero stile GitHub */
+    color: #c9d1d9; /* Testo grigio chiaro */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+    margin: 0;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 25px;
+}
+
+.box {
+    background-color: #161b22; /* Box leggermente più chiaro dello sfondo */
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 20px;
+    width: 320px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    padding: 8px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    background-color: #0d1117;
+    color: white;
+    box-sizing: border-box; /* Importante per non far uscire l'input dal box */
+}
+
+input:focus {
+    border-color: #58a6ff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(88,166,255,0.3);
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #238636; /* Verde "success" di GitHub */
+    color: white;
+    border: 1px solid rgba(240,246,252,0.1);
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #2ea043;
+}
+
+.footer-box {
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 15px;
+    width: 320px;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+a {
+    color: #58a6ff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.alert {
+    background-color: rgba(248, 81, 73, 0.15);
+    color: #ff7b72;
+    padding: 10px;
+    border: 1px solid rgba(248, 81, 73, 0.4);
+    border-radius: 6px;
+    font-size: 13px;
+    margin-bottom: 15px;
+    display: none;
+}
+
+/* Stili specifici per Tabelle e Form Prenotazione */
+textarea {
+    width: 100%;
+    padding: 8px 12px;
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    color: white;
+    font-family: inherit;
+    resize: vertical;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #30363d;
+}
+
+th {
+    background-color: #21262d;
+    color: #c9d1d9;
+    font-weight: 600;
+}
+
+tr:hover {
+    background-color: #1c2128;
+}
+
+.btn-secondary {
+    background-color: #21262d;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    padding: 5px 15px;
+    font-size: 14px;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.btn-secondary:hover {
+    background-color: #30363d;
+}
+
+/* Layout specifico per la Dashboard */
+.dashboard-layout {
+    display: flex;
+    flex-direction: row;
+    padding-top: 0;
+    align-items: stretch;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background-color: #161b22;
+    border-right: 1px solid #30363d;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+}
+
+.sidebar-header {
+    padding: 0 20px 30px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #58a6ff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-links li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    color: #c9d1d9;
+    transition: 0.2s;
+}
+
+.nav-links li a:hover, .nav-links li a.active {
+    background-color: #21262d;
+    color: #58a6ff;
+    border-left: 3px solid #58a6ff;
+}
+
+.logout-item { margin-top: auto; }
+.logout-item a { color: #ff7b72 !important; }
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    background-color: #0d1117;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 20px;
+}
+
+.user-badge {
+    background: #21262d;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    border: 1px solid #30363d;
+}
+
+.welcome-card {
+    background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+    border: 1px solid #30363d;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.action-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    padding: 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.action-card:hover {
+    border-color: #58a6ff;
+    transform: translateY(-5px);
+}
+
+.action-card i {
+    font-size: 30px;
+    color: #58a6ff;
+    margin-bottom: 15px;
+}
+
+.alert-success {
+    display: none;
+    background: rgba(35, 134, 54, 0.2);
+    color: #3fb950;
+    padding: 10px;
+    border: 1px solid #238636;
+    border-radius: 6px;
+    margin-top: 15px;
+}
+
+/* Centratura Tabella */
+.table-container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 20px auto; /* Centra orizzontalmente */
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    overflow-x: auto; /* Evita che la tabella esca dai bordi su schermi piccoli */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #c9d1d9;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #30363d;
+}
+
+th {
+    background-color: #21262d;
+    color: #58a6ff;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+tr:hover {
+    background-color: #1c2128;
+}
+
+/* Impedisce al motivo lungo di rompere la tabella */
+td {
+    max-width: 250px;
+    white-space: normal;
+    word-wrap: break-word;
+    vertical-align: middle;
+}
+
+/* Allarga la tabella per dare respiro alla data e ora */
+.table-container {
+    width: 95% !important;
+    max-width: 1100px !important;
+    margin: 30px auto;
+}
+
+#tabellaPrenotazioni td:nth-child(4) {
+    min-width: 180px !important;
+    white-space: nowrap;
+    color: #fff; /* Assicurati che il colore non sia nero su sfondo nero! */
+}
+
+/* style.css - Aggiungi/Sostituisci questo blocco in fondo al tuo file */
+
+/* Contenitore Tabella Centrato */
+.table-container {
+    width: 95%;
+    max-width: 1100px;
+    margin: 30px auto;
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #c9d1d9;
+}
+
+th {
+    background-color: #21262d;
+    color: #58a6ff;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #30363d;
+}
+
+td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #30363d;
+    vertical-align: middle;
+    word-wrap: break-word;
+}
+
+tr:hover {
+    background-color: #1c2128;
+}
+
+/* Colonna Data e Ora: Impedisce lo sminchiamento */
+td:nth-child(4) {
+    min-width: 170px; /* Spazio vitale per la data */
+    white-space: nowrap; /* Evita che vada a capo a metà */
+    color: #c9d1d9; /* Colore standard, niente più azzurro strano */
+}
+
+/* Colonna Motivo: Gestisce testi lunghi (come l'aura) */
+td:nth-child(5) {
+    max-width: 350px;
+    white-space: normal;
+}
+
+/* Bottone Torna alla Dashboard stile GitHub */
+.btn-secondary {
+    background-color: #21262d;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: #30363d;
+    border-color: #8b949e;
+    text-decoration: none;
+}

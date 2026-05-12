@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Clinica - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="dashboard-layout">
+
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <i class="fa-solid fa-hospital-user"></i>
+            <span>Clinica Privata</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="dashboard.html" class="active"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+            <li><a href="prenota.html"><i class="fa-solid fa-plus"></i> Nuova Visita</a></li>
+            <li><a href="mie-prenotazioni.html"><i class="fa-solid fa-calendar-days"></i> I miei appuntamenti</a></li>
+            <li class="logout-item"><a href="api/logout"><i class="fa-solid fa-right-from-bracket"></i> Esci</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <h2>Area Personale</h2>
+            <div id="user-info" class="user-badge">
+                <i class="fa-solid fa-circle-user"></i> Utente Loggato
+            </div>
+        </header>
+
+        <section class="welcome-section">
+            <div class="welcome-card">
+                <h1>Benvenuto nel tuo portale</h1>
+                <p>Gestisci le tue prenotazioni mediche in modo rapido e sicuro.</p>
+                <div id="status-msg" class="alert-success"></div>
+            </div>
+        </section>
+
+        <div class="dashboard-grid">
+            <div class="action-card" onclick="location.href='prenota.html'">
+                <i class="fa-solid fa-calendar-plus"></i>
+                <h3>Prenota Visita</h3>
+                <p>Scegli la data e il motivo della tua prossima visita specialistica.</p>
+            </div>
+            <div class="action-card" onclick="location.href='mie-prenotazioni.html'">
+                <i class="fa-solid fa-list-check"></i>
+                <h3>I tuoi impegni</h3>
+                <p>Visualizza lo storico e i dettagli delle tue prenotazioni attive.</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Gestione messaggi di successo
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('msg') === 'ok') {
+            const alert = document.getElementById('status-msg');
+            alert.style.display = 'block';
+            alert.innerHTML = "<i class='fa-solid fa-check'></i> Prenotazione inviata con successo!";
+        }
+    </script>
+</body>
+</html>
