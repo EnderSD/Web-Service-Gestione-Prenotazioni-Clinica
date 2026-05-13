@@ -1,6 +1,4 @@
 
-# Documentazione Approfondita: Web Service Gestione Timbrature
-
 # Documentazione Approfondita: Web Service Gestione Prenotazioni Clinica
 
 ## Indice
@@ -21,17 +19,18 @@
      * 2.3.4. `GET /prenotazioni/lista` (Lista Prenotazioni Utente)
      * 2.3.5. `PUT /prenotazioni/modifica` (Modifica Prenotazione)
      * 2.3.6. `DELETE /prenotazioni/cancella` (Cancella Prenotazione)
+     * 2.3.7. `POST /prenotazioni/logout` (Uscita dalla sessione)
    * 2.4. Flussi di Lavoro Tipici
    * 2.5. Gestione degli Errori e Codici di Stato
-   * 2.6. Schema XSD
 
 3. **Dettagli di Implementazione**
-   * 3.1. Architettura Software
-   * 3.2. Struttura del Database
-   * 3.3. Componenti Chiave del Backend (Java)
-   * 3.4. Logica di Business e Validazione
-   * 3.5. Considerazioni sulla Sicurezza (Attuale e Futura)
-   * 3.6. Possibili Estensioni Future
+   * 3.1. Requisiti di sistema e ambiente
+   * 3.2. Architettura Software
+   * 3.3. Struttura del Database
+   * 3.4. Componenti Chiave del Backend (Java)
+   * 3.5. Logica di Business e Validazione
+   * 3.6. Considerazioni sulla Sicurezza (Attuale e Futura)
+   * 3.7. Possibili Estensioni Future
 ---
 
 ## 1. Scopo del Sistema
@@ -122,7 +121,7 @@ Attualmente **non è implementato un sistema di versioning** delle API. Per futu
 
 * **Scopo:** Autenticare un utente tramite email e password.
 * **Flusso:** 
-    1. Il client invia email e password in XML.
+    1. Il client invia email e password.
     2. Il server verifica la combinazione nel DB.
     3. Se valida, restituisce l'ID utente e i dettagli.
 
@@ -167,6 +166,14 @@ Attualmente **non è implementato un sistema di versioning** delle API. Per futu
     3. Verifica che la prenotazione appartenga all'utente.
     4. Elimina il record dal DB.
 
+####  2.3.7. POST /api/prenotazioni/logout - Rimozione sessione
+
+* **Scopo:**Chiudere la sessione.
+* **Flusso:**
+    1. Client invia richiesta di logout.
+    2. Server valida la richiesta.
+    3. Chiusura della sessione.
+
 ### 2.4. Flussi di Lavoro Tipici
 
 Scenario 1: Registrazione e Prima Prenotazione
@@ -203,61 +210,65 @@ Scenario 4: Email già registrata
 
 I client _dovrebbero_ sempre leggere il corpo della risposta (`text/plain`) in caso di errore per ottenere un messaggio descrittivo.
 
-### 2.6. Esempi di Interazione (curl)
-
-* `curl -X GET http://localhost:8080/TimbraturaWebService/api/timbrature`
-* `curl -X POST -d "rfid=RFID0001&totem=INGR0001" http://localhost:8080/TimbraturaWebService/api/timbrature`
-* `curl -X DELETE http://localhost:8080/TimbraturaWebService/api/timbrature?rfid=RFID0001`
-
 ---
 
 ## 3. Dettagli di Implementazione
 
-### 3.1. Architettura Software
+### 3.1. Requisiti di sistema e ambiente
+
+Per il corretto funzionamento, la compilazione e il deployment dell'applicazione, sono necessari i seguenti componenti:
+
+1. **Java Development Kit (JDK):** Versione 11
+2. **Application Server:** Apache Tomcatt(8.5.96)
+3. **Database:** MySQL
+4. **Libreria:** mysql-connector-j-8.4.0.jar 
+5. **IDE:** NetBeans IDE 29
+
+### 3.2. Architettura Software
 
 Il sistema segue un'architettura a layer (strati) semplificata:
 
 1.  **Presentation/Client Layer:** L'interfaccia web (`index.html`) o sistemi esterni.
 2.  **Web/Controller Layer**
 3.  **Business/Data Access Layer:**
-4.  **Data Layer:** Database MySQL.
+4.  **Data Layer:** Database MySQL (presente all'interno della repository sotto il nome di "DataBase WebApplicationClinica", copiare ed incollare le query presenti per il funzionamento corretto del programma)
 
-Il tutto è eseguito da **Apache Tomcat**.
+Il tutto è eseguito tramite **XAMPP Apache Tomcat**.
 
-### 3.2. Struttura del Database
+### 3.3. Struttura del Database
 
 * **`Utente `:** Anagrafica base, email, password.
 * **`Prenotazione`:** Id_prenotazione INT AUTO_INCREMENT PRIMARY KEY, Id_Utente INT, Medico VARCHAR(100), stanza VARCHAR(50), Data_appuntamento DATETIME, Motivo_visita TEXT.
 
-### 3.3. Componenti Chiave del Backend (Java)
+### 3.4. Componenti Chiave del Backend (Java)
 
-#### 3.3.1. `GestionePrenotazioniServlet` 
+#### 3.4.1. `ClinicaServlet` 
 
-* Intercetta le richieste HTTP POST, GET, PUT, DELETE.
-* Estrae l'azione dal path (registrazione, login, nuova, lista, modifica, cancella).
+* Gestisce le richieste tramite i metodi doGet e doPost.
+* Estrae l'azione dal path (registrazione, login, logout, nuova, modifica, cancella).
 * Interpreta parametri e formatta risposte.
 
-#### 3.3.2. `UtenteDAO` 
+#### 3.4.2. `UtenteDAO` 
 
 * Gestire le operazioni CRUD su Utenti.
 * Interagire con il DB tramite JDBC.
 * Implementare la logica di validazione utenti.
 
-#### 3.3.3. `PrenotazioneDAO` 
+#### 3.4.3. `PrenotazioneDAO` 
 
 * Gestire le operazioni CRUD su Prenotazioni.
 * Implementare la logica di validazione e assegnazione prenotazioni.
 
-#### 3.3.4. `DatabaseManager` 
+#### 3.4.4. `DatabaseManager` 
 
 * Centralizzare la connessione al database.
 * Fornire connessioni JDBC.
 
-### 3.4. Logica di Business e Validazione
+### 3.5. Logica di Business e Validazione
 
 Validazioni Registrazione:
 
-1.  Nome/Cognome: Non vuoti, lunghezza 1-50 caratteri.
+1. Nome/Cognome: Non vuoti, lunghezza 1-50 caratteri.
 2. Email: Formato valido, non vuota, univoca nel DB.
 3. Password: Non vuota, lunghezza minima 6 caratteri.
 
@@ -270,7 +281,7 @@ Validazioni Nuova Prenotazione:
 
 1. IdUtente: Esiste nel DB.
 2. Email/Password: Corrette (re-autenticazione).
-3. Data Appuntamento: Deve essere futura (data > oggi).
+3. Data Appuntamento.
 4. Massimo Prenotazioni Medico/Giorno: Un medico può avere massimo 4 prenotazioni al giorno.
 5. Unicità Medico+Data: Non esiste già una prenotazione per quello stesso medico a quell'ora.
 6. MotivoVisita: Non vuoto.
@@ -278,7 +289,7 @@ Validazioni Nuova Prenotazione:
 Assegnazione Automatica Medico/Stanza:
 
 * Medici disponibili: Dr. Bianchi, Dr. Verdi, Dr. Rossi (con stanze 101, 102, 103).
-* Logica di Assegnazione: Round-robin (il prossimo medico con meno prenotazioni quel giorno), oppure random.
+* Logica di Assegnazione: random successivamente è possibilie implementare un sorteggio Round-robin (il prossimo medico con meno prenotazioni quel giorno).
 
 Validazioni Modifica Prenotazione:
 
@@ -292,16 +303,16 @@ Validazioni Cancellazione:
 * Appartiene all'utente autenticato.
 
 
-### 3.5. Considerazioni sulla Sicurezza (Attuale e Futura)
+### 3.6. Considerazioni sulla Sicurezza (Attuale e Futura)
 
 * **Attuale (Minimale):**
-- Autenticazione: Solo email + password (plain text nel body XML, nessun token).
+- Autenticazione: Solo email + password (plain text, nessun token).
 - Validazione Input: Controllli di base sulla lunghezza campi.
 - SQL Injection: Mitigata con PreparedStatement.
 - HTTPS: NON implementato (solo HTTP).
 - Crittografia Password: NO (plain text nel DB - solo per demo).
 
-### 3.6. Possibili Estensioni Future
+### 3.7. Possibili Estensioni Future
 
 * Crittografia Password: Hash con algoritmo sicuro (bcrypt, Argon2).
 * HTTPS/TLS: Comunicazione crittografata.
