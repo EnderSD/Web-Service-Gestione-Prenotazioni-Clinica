@@ -101,9 +101,9 @@ Il web service è progettato seguendo i principi REST (Representational State Tr
 
 ### 2.2. URL di Base e Versioning
 
-L'URL di base è: `http://<server>:<porta>/<nome_applicazione>/api`
+L'URL di base è: `http://<server>:<porta>/<nome_applicazione>/`
 
-Esempio: `http://localhost:????/GestionePrenotazioniClinica/api/prenotazioni`
+Esempio: `http://localhost:8080/WebApplicationClinicaPrivata`
 
 Attualmente **non è implementato un sistema di versioning** delle API. Per future evoluzioni (versione 2.0), sarà consigliabile introdurre `/api/v1/prenotazioni` e `/api/v2/prenotazioni`.
 
