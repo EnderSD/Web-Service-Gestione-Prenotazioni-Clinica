@@ -10,24 +10,25 @@ import java.sql.*;
 
 public class UtenteDAO {
 
-    // Registrazione: Inserisce un nuovo utente dopo aver controllato l'email
     public boolean registraUtente(Utente utente) throws SQLException {
         String query = "INSERT INTO Utente (nome, cognome, email, password) VALUES (?, ?, ?, ?)";
         
+        //try-with-resources: apre la connessione e si assicura di chiuderla in automatico
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             
             ps.setString(1, utente.getNome());
             ps.setString(2, utente.getCognome());
             ps.setString(3, utente.getEmail());
-            ps.setString(4, utente.getPassword()); // In chiaro come da doc
+            ps.setString(4, utente.getPassword()); 
             
             return ps.executeUpdate() > 0;
         }
     }
 
-    // Login: Verifica se esiste un utente con quelle credenziali
+    
     public Utente login(String email, String password) throws SQLException {
+        //Cerca nel database un utente che abbia emaile password concordati
         String query = "SELECT * FROM Utente WHERE email = ? AND password = ?";
         
         try (Connection conn = DatabaseManager.getConnection();
@@ -48,6 +49,6 @@ public class UtenteDAO {
                 }
             }
         }
-        return null; // Credenziali errate
+        return null; 
     }
 }

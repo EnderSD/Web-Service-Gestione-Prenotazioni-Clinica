@@ -16,17 +16,65 @@ public class Prenotazione {
 
     public Prenotazione() {}
 
-    // Getter e Setter
-    public int getIdPrenotazione() { return idPrenotazione; }
-    public void setIdPrenotazione(int idPrenotazione) { this.idPrenotazione = idPrenotazione; }
-    public int getIdUtente() { return idUtente; }
-    public void setIdUtente(int idUtente) { this.idUtente = idUtente; }
-    public String getMedico() { return medico; }
-    public void setMedico(String medico) { this.medico = medico; }
-    public String getStanza() { return stanza; }
-    public void setStanza(String stanza) { this.stanza = stanza; }
-    public Timestamp getDataAppuntamento() { return dataAppuntamento; }
-    public void setDataAppuntamento(Timestamp dataAppuntamento) { this.dataAppuntamento = dataAppuntamento; }
-    public String getMotivoVisita() { return motivoVisita; }
-    public void setMotivoVisita(String motivoVisita) { this.motivoVisita = motivoVisita; }
+
+    public int getIdPrenotazione() { 
+        
+        return idPrenotazione;
+    
+    }
+    public void setIdPrenotazione(int idPrenotazione) { 
+        
+        this.idPrenotazione = idPrenotazione;
+    
+    }
+    public int getIdUtente() { 
+        
+        return idUtente;
+    
+    }
+    public void setIdUtente(int idUtente) { 
+        
+        this.idUtente = idUtente;
+    
+    }
+    public String getMedico() { 
+        
+        return medico;
+    
+    }
+    public void setMedico(String medico) { 
+        
+        this.medico = medico;
+    
+    }
+    public String getStanza() { 
+        
+        return stanza;
+    
+    }
+    public void setStanza(String stanza) { 
+        
+        this.stanza = stanza;
+    
+    }
+    public Timestamp getDataAppuntamento() { 
+        
+        return dataAppuntamento;
+    
+    }
+    public void setDataAppuntamento(Timestamp dataAppuntamento) { 
+        
+        this.dataAppuntamento = dataAppuntamento;
+    
+    }
+    public String getMotivoVisita() { 
+        
+        return motivoVisita;
+    
+    }
+    public void setMotivoVisita(String motivoVisita) { 
+        
+        this.motivoVisita = motivoVisita;
+    
+    }
 }

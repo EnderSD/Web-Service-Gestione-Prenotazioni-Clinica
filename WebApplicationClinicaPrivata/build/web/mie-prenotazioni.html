@@ -25,6 +25,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                     <th>Stanza</th>
                     <th>Data e Ora</th>
                     <th>Motivo</th>
+                    <th>Azioni</th>
                 </tr>
             </thead>
             <tbody id="corpoTabella">
@@ -39,36 +40,113 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     </div>
 
     <script>
-        fetch('api/lista')
-            .then(res => res.text())
-            .then(text => {
-                const tbody = document.getElementById('corpoTabella');
-                tbody.innerHTML = "";
+        
+         /*
+         * GESTIONE DINAMICA DEL FRONT-END (Logica Client-Side)
+         * script  progettato per gestire l'interazione tra l'interfaccia e il server 
+         * Il flusso si divide in tre :
+         * 1. SINCRONIZZAZIONE (Fetch): Comunica con la Servlet via API per recuperare i dati 
+         * dal DB e trasformarli in elementi grafici reali (righe della tabella).
+         * * 2. EDITING "IN-PLACE": implementata logica che trasforma dinamicamente 
+         * le celle di testo in campi di input e calendari. Questo permette di 
+         * modificare data e motivo direttamente sulla riga selezionata.
+         * * 3. FORMATTAZIONE E INVIO: Lo script si occupa di convertire i date e di inviarli via POST. 
+         * Solo dopo la conferma dal server, la tabella viene aggiornata per garantire la coerenza dei dati visualizzati.
+         */
 
-                const righe = text.trim().split('\n');
-                
-                righe.forEach(riga => {
-                    if (riga.trim() && riga.includes('|')) {
-                        const tr = document.createElement('tr');
-                        const colonne = riga.split('|');
 
-                        for (let i = 0; i < 5; i++) {
-                            const td = document.createElement('td');
-                            let valore = colonne[i] ? colonne[i].trim() : "-";
-                            
-                            // Pulizia etichette (es. "ID: 3" -> "3") ma non per la colonna data (i=3)
-                            if (valore.includes(':') && i !== 3) { 
-                                valore = valore.split(':')[1].trim();
+        function caricaLista() {
+            //Richiamo servlet per ottenere la stringa con le prenotazioni
+            fetch('api/lista')
+                .then(res => res.text()) //Conversione risposta in testo
+                .then(text => {
+                    const tbody = document.getElementById('corpoTabella');
+                    tbody.innerHTML = ""; //Pulisce la tabella prima di ricaricarla
+                    const righe = text.trim().split('\n');
+                    
+                    righe.forEach(riga => {
+                        if (riga.trim() && riga.includes('|')) {
+                            const tr = document.createElement('tr');
+                            const colonne = riga.split('|');
+                            const idPre = colonne[0].trim();
+
+                            for (let i = 0; i < 5; i++) {
+                                const td = document.createElement('td');
+                                let valore = colonne[i] ? colonne[i].trim() : "-";
+                                if (valore.includes(':') && i !== 3) { 
+                                    valore = valore.split(':')[1].trim();
+                                }
+                                td.innerText = valore;
+                                tr.appendChild(td);
                             }
-                            
-                            td.innerText = valore;
-                            tr.appendChild(td);
+
+                            const tdAzioni = document.createElement('td');
+                            tdAzioni.innerHTML = `
+                                <button class="btn-action btn-edit" onclick="abilitaModifica('${idPre}', this)" title="Modifica">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-action btn-delete" onclick="elimina('${idPre}')" title="Elimina">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            `;
+                            tr.appendChild(tdAzioni);
+                            tbody.appendChild(tr);
                         }
-                        tbody.appendChild(tr);
-                    }
+                    });
+                })
+                .catch(err => console.error("Errore:", err));
+        }
+
+        function abilitaModifica(id, btn) {
+            const tr = btn.closest('tr');
+            const celle = tr.getElementsByTagName('td');
+            
+            const dataPezzo = celle[3].innerText.split(' ')[0]; 
+            const motivoAttuale = celle[4].innerText;
+
+            const d = dataPezzo.split('/');
+            const dataPerInput = `${d[2]}-${d[1]}-${d[0]}`;
+
+            celle[3].innerHTML = `<input type="date" id="edit-data-${id}" value="${dataPerInput}" class="input-edit">`;
+            celle[4].innerHTML = `<input type="text" id="edit-motivo-${id}" value="${motivoAttuale}" class="input-edit" style="width: 90%;">`;
+
+            celle[5].innerHTML = `
+                <button class="btn-action" onclick="salvaModifiche('${id}')" style="color: #3fb950;"><i class="fas fa-check"></i></button>
+                <button class="btn-action" onclick="caricaLista()" style="color: #f85149;"><i class="fas fa-times"></i></button>
+            `;
+        }
+
+        function salvaModifiche(id) {
+            const nuovaData = document.getElementById(`edit-data-${id}`).value;
+            const nuovoMotivo = document.getElementById(`edit-motivo-${id}`).value;
+
+            if (!nuovaData || !nuovoMotivo) {
+                alert("Riempi tutti i campi!");
+                return;
+            }
+
+            const params = new URLSearchParams();
+            params.append('id', id);
+            params.append('data', nuovaData);
+            params.append('motivo', nuovoMotivo);
+
+            fetch('api/modifica', { method: 'POST', body: params })
+                .then(res => {
+                    if (res.ok) { caricaLista(); } 
+                    else { alert("Errore nel salvataggio"); }
                 });
-            })
-            .catch(err => console.error("Errore caricamento:", err));
+        }
+
+        function elimina(id) {
+            if (confirm("Eliminare la prenotazione #" + id + "?")) {
+                const params = new URLSearchParams();
+                params.append('id', id);
+                fetch('api/cancella', { method: 'POST', body: params })
+                    .then(res => res.ok ? caricaLista() : alert("Errore"));
+            }
+        }
+
+        caricaLista();
     </script>
 </body>
 </html>

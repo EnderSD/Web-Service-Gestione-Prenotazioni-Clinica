@@ -12,7 +12,9 @@ import java.util.List;
 
 public class PrenotazioneDAO {
 
-    // Conta quante prenotazioni ha un medico in un determinato giorno
+   //contaPrenotazioniMedicoGiorno: Impedisce che un medico riceva troppi appuntamenti nello stesso giorno
+   //Logica buisness del sistema
+    
     public int contaPrenotazioniMedicoGiorno(String medico, Timestamp data) throws SQLException {
         String query = "SELECT COUNT(*) FROM Prenotazione WHERE Medico = ? AND DATE(Data_appuntamento) = DATE(?)";
         try (Connection conn = DatabaseManager.getConnection();
@@ -20,14 +22,14 @@ public class PrenotazioneDAO {
             ps.setString(1, medico);
             ps.setTimestamp(2, data);
             ResultSet rs = ps.executeQuery();
+            //Ritorna il numero di prenotazioni trovate
             if (rs.next()) return rs.getInt(1);
         }
         return 0;
     }
-
-    // Inserimento con validazione
+    //Semplice Insert per aggiunere una prenotazione
     public boolean inserisciPrenotazione(Prenotazione p) throws SQLException {
-        // 1. Controllo limite 4 prenotazioni
+      
         if (contaPrenotazioniMedicoGiorno(p.getMedico(), p.getDataAppuntamento()) >= 4) {
             return false; 
         }
@@ -44,7 +46,7 @@ public class PrenotazioneDAO {
         }
     }
 
-    // Lista prenotazioni per utente
+
     public List<Prenotazione> getListaPerUtente(int idUtente) throws SQLException {
         List<Prenotazione> lista = new ArrayList<>();
         String query = "SELECT * FROM Prenotazione WHERE Id_Utente = ?";
@@ -53,6 +55,7 @@ public class PrenotazioneDAO {
             ps.setInt(1, idUtente);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                //Trasforma ogni riga del database in un oggetto Java: Prenotazione
                 Prenotazione p = new Prenotazione();
                 p.setIdPrenotazione(rs.getInt("Id_prenotazione"));
                 p.setMedico(rs.getString("Medico"));
@@ -64,4 +67,25 @@ public class PrenotazioneDAO {
         }
         return lista;
     }
-}
+    
+
+    public boolean cancellaPrenotazione(int idPrenotazione) throws SQLException {
+     String query = "DELETE FROM Prenotazione WHERE Id_prenotazione = ?";
+     try (Connection conn = DatabaseManager.getConnection();
+          PreparedStatement ps = conn.prepareStatement(query)) {
+         ps.setInt(1, idPrenotazione);
+         return ps.executeUpdate() > 0;
+     }
+ }
+
+    public boolean modificaPrenotazioneCompleta(int id, String motivo, Timestamp data) throws SQLException {
+        String query = "UPDATE Prenotazione SET Motivo_visita = ?, Data_appuntamento = ? WHERE Id_prenotazione = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, motivo);
+            ps.setTimestamp(2, data);
+            ps.setInt(3, id);
+            return ps.executeUpdate() > 0;
+            }
+        }
+    }
